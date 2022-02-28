@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"errors"
 	"gorm.io/gorm"
 	"time"
 )
@@ -23,4 +24,18 @@ type UserDao struct {
 
 func (*Users) TableName() string {
 	return "users"
+}
+
+func (u *UserDao) ReadByUserNameAndPass(userName, password string) (*Users, error) {
+	if userName == "" {
+		return nil, errors.New("参数为空")
+	}
+
+	var userDo Users
+	err := Db.Model(Users{}).Where("user_name = ? and password = ?  ", userName, password).Find(&userDo).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &userDo, nil
 }

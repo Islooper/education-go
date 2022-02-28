@@ -30,6 +30,13 @@ func (u *User) Login(ctx *gin.Context) {
 		return
 	}
 
-	util.OkWithData(userDo, ctx)
+	// 获取ip并更新
+	userDo.Ip = util.GetRequestIP(ctx)
+	err = u.UserDao.UpdateIp(userDo)
+	if err != nil {
+		util.FailWithMessage("更新ip失败:"+err.Error(), ctx)
+		return
+	}
 
+	util.OkWithData(userDo, ctx)
 }

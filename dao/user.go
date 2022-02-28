@@ -39,3 +39,7 @@ func (u *UserDao) ReadByUserNameAndPass(userName, password string) (*Users, erro
 
 	return &userDo, nil
 }
+
+func (u *UserDao) UpdateIp(userDo *Users) error {
+	return Db.Model(Users{}).Where("id = ? ", userDo.Id).Updates(userDo).Error
+}

@@ -3,6 +3,7 @@ package services
 import (
 	"educaition/dao"
 	"educaition/util"
+	"fmt"
 	"github.com/gin-gonic/gin"
 )
 
@@ -38,5 +39,6 @@ func (u *User) Login(ctx *gin.Context) {
 		return
 	}
 
+	fmt.Println(userDo)
 	util.OkWithData(userDo, ctx)
 }

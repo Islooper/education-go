@@ -36,3 +36,27 @@ func (f *FileDao) List(pageNo, pageSize int) ([]*File, error) {
 func (f *FileDao) Create(file *File) error {
 	return Db.Create(file).Error
 }
+
+func (f *FileDao) Delete(id int64) error {
+	return Db.Model(&File{}).Delete("id", id).Error
+}
+
+func (f *FileDao) ReadById(id int64) (*File, error) {
+	fileDo := new(File)
+
+	err := Db.Model(&File{}).Where("id = ?", id).First(fileDo).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return fileDo, nil
+}
+
+func (f *FileDao) UpdateIsOn(id int64, isOn int) error {
+	err := Db.Model(&File{}).Where("id = ?", id).UpdateColumn("is_on", isOn).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
